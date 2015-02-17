@@ -1,4 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<linearlayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,41 +9,67 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/add_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="17dp"
-        android:text="Add" />
+	<textview 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="wrap_content" 
+	    android:id="@+id/TextView01" 
+	    android:textSize="20sp"
+	    android:layout_marginTop="5dp"
+	    android:text="SQLite基本操作">
+	</textview>
+	
+	<button 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="wrap_content"  
+	    android:id="@+id/add_button" 
+	    android:textSize="20sp"
+	    android:layout_marginTop="5dp"
+	    android:text="insert" 
+	    android:minWidth="200dp">
+	</button>
+		
+	<button 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="wrap_content" 
+	    android:id="@+id/delete_button" 
+	    android:textSize="20sp"
+	    android:layout_marginTop="5dp"
+	    android:text="delete" 
+	    android:minWidth="200dp">
+	</button>
+		
+	<button 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="wrap_content" 
+	    android:id="@+id/modify_button" 
+	    android:textSize="20sp"
+	    android:layout_marginTop="5dp"
+	    android:text="modify" 
+	    android:minWidth="200dp">
+	</button>
+		
+	<button 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="wrap_content" 
+	    android:id="@+id/query_button" 
+	    android:textSize="20sp"
+	    android:layout_marginTop="5dp"
+	    android:text="query" 
+	    android:minWidth="200dp">
+	</button>
+	
+		
+	<spinner 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="wrap_content" 
+	    android:id="@+id/Spinner01" 
+	    android:minWidth="200dp">
+	</spinner>
+	
+	<textview 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="wrap_content" 
+	    android:id="@+id/TextView02">
+	</textview>
 
-    <Button
-        android:id="@+id/delete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="32dp"
-        android:text="Delete" />
-
-    <Button
-        android:id="@+id/modify_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button2"
-        android:layout_below="@+id/button2"
-        android:layout_marginTop="26dp"
-        android:text="Modify" />
-
-    <Button
-        android:id="@+id/query_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button3"
-        android:layout_below="@+id/button3"
-        android:layout_marginTop="28dp"
-        android:text="Query" />
-
-</RelativeLayout>
+</linearlayout>
