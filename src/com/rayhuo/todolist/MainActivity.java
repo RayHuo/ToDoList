@@ -47,8 +47,8 @@ public class MainActivity extends Activity {
 		ListAdapter listAdapter = new SimpleCursorAdapter(this, 
 				android.R.layout.simple_list_item_2, 
                 cursor, 
-                new String[] { ContactsContract.Contacts.DISPLAY_NAME },
-                new int[] {android.R.id.text1});
+                new String[] { ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts._ID },
+                new int[] { android.R.id.text1, android.R.id.text2 });
 		m_ListView.setAdapter(listAdapter);
 		
 		setContentView(m_ListView);
