@@ -1,5 +1,6 @@
 package com.rayhuo.todolist;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.PhoneLookup;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -29,31 +31,76 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
-	private LinearLayout m_LinearLayout;
 	private ListView m_ListView;
+	private SQLiteDatabase m_db;
+	private final String TABLE_NAME = "issue";
 	
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 //		setContentView(R.layout.activity_main);  
+			
+//		m_ListView = new ListView(this);
+////		m_ListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1,getData()));
+//        
+//		Cursor cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+//		startManagingCursor(cursor);		
+//		ListAdapter listAdapter = new SimpleCursorAdapter(this, 
+//				android.R.layout.simple_list_item_2, 
+//                cursor, 
+//                new String[] { ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts._ID },
+//                new int[] { android.R.id.text1, android.R.id.text2 });
+//		m_ListView.setAdapter(listAdapter);
+//		
+//		setContentView(m_ListView);
 		
+		
+		// 初始化数据库
+		initDatabase();
+		
+		// 创建显示用的ListView
 		m_ListView = new ListView(this);
-//		m_ListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1,getData()));
-        
-		Cursor cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
-		startManagingCursor(cursor);
 		
+		// 获取数据
+		Cursor cur = m_db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+		startManagingCursor(cur);		
 		ListAdapter listAdapter = new SimpleCursorAdapter(this, 
 				android.R.layout.simple_list_item_2, 
-                cursor, 
-                new String[] { ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts._ID },
+                cur, 
+                new String[] { "content", "date" },
                 new int[] { android.R.id.text1, android.R.id.text2 });
 		m_ListView.setAdapter(listAdapter);
 		
 		setContentView(m_ListView);
+		
 	}
 
+	private void initDatabase() {
+		//打开或创建ToDoList.db数据库  
+        m_db = openOrCreateDatabase("ToDoList.db", Context.MODE_PRIVATE, null);  
+        m_db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME); 
+        
+        //创建issue表  
+        m_db.execSQL("CREATE TABLE " + TABLE_NAME + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, content VARCHAR(1000), date DATETIME DEFAULT CURRENT_TIMESTAMP)");  
+        
+        // 人工初始化一些数据
+        ContentValues cv = new ContentValues();
+        cv.put("content", "This is a joke!");
+//        cv.put("date", );
+        m_db.insert(TABLE_NAME, null, cv);
+        
+        cv = new ContentValues();
+        cv.put("content", "Happy new year!");
+//        cv.put("date", );
+        m_db.insert(TABLE_NAME, null, cv);
+        
+        cv = new ContentValues();
+        cv.put("content", "Android Learning!");
+//        cv.put("date", );
+        m_db.insert(TABLE_NAME, null, cv);
+	}
+	
 	private List<String> getData(){       
         List<String> data = new ArrayList<String>();
         data.add("测试数据1");
