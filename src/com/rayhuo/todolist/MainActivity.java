@@ -61,57 +61,72 @@ public class MainActivity extends Activity {
 		// 初始化数据库
 		initDatabase();
 		
+		// 直接在AddIssue中把数据放进intent里返回来，然后调用这里的insert函数插入到数据库即可
+		
 		// 创建显示用的ListView
-//		m_ListView = new ListView(this);		
-		m_ListView = (ListView)findViewById(R.id.listView1);
-		
-		// 获取数据
-		Cursor cur = m_db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-		startManagingCursor(cur);		
-		ListAdapter listAdapter = new SimpleCursorAdapter(this, 
-				android.R.layout.simple_list_item_2, 
-                cur, 
-                new String[] { "content", "date" },
-                new int[] { android.R.id.text1, android.R.id.text2 });
-		m_ListView.setAdapter(listAdapter);
-		
-		add_button = (Button)findViewById(R.id.add_button);
-		add_button.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				// TODO Auto-generated method stub
-				Intent add_intent = new Intent(MainActivity.this, AddIssue.class);
-				startActivity(add_intent);
-			}
-			
-		});
+////		m_ListView = new ListView(this);		
+//		m_ListView = (ListView)findViewById(R.id.listView1);
+//		
+//		// 获取数据
+//		Cursor cur = m_db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+//		startManagingCursor(cur);		
+//		ListAdapter listAdapter = new SimpleCursorAdapter(this, 
+//				android.R.layout.simple_list_item_2, 
+//                cur, 
+//                new String[] { "content", "date" },
+//                new int[] { android.R.id.text1, android.R.id.text2 });
+//		m_ListView.setAdapter(listAdapter);
+//		
+//		add_button = (Button)findViewById(R.id.add_button);
+//		add_button.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View view) {
+//				// TODO Auto-generated method stub
+//				Intent add_intent = new Intent(MainActivity.this, AddIssue.class);
+//				startActivity(add_intent);
+//			}
+//			
+//		});
 		
 	}
 
 	private void initDatabase() {
-		//打开或创建ToDoList.db数据库  
-        m_db = openOrCreateDatabase("ToDoList.db", Context.MODE_PRIVATE, null);  
-        m_db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME); 
-        
-        //创建issue表  
-        m_db.execSQL("CREATE TABLE " + TABLE_NAME + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, content VARCHAR(1000), date DATETIME DEFAULT CURRENT_TIMESTAMP)");  
-        
-        // 人工初始化一些数据
-        ContentValues cv = new ContentValues();
-        cv.put("content", "This is a joke!");
-//        cv.put("date", );
-        m_db.insert(TABLE_NAME, null, cv);
-        
-        cv = new ContentValues();
-        cv.put("content", "Happy new year!");
-//        cv.put("date", );
-        m_db.insert(TABLE_NAME, null, cv);
-        
-        cv = new ContentValues();
-        cv.put("content", "Android Learning!");
-//        cv.put("date", );
-        m_db.insert(TABLE_NAME, null, cv);
+		ContentValues cv = new ContentValues();
+		cv.put("content", "This is a joke!");
+		MDatabase.Instance(MainActivity.this);
+		MDatabase.insertIssue(MainActivity.this, cv);
+		
+		cv = new ContentValues();
+		cv.put("content", "Happy new year!");
+		MDatabase.Instance(MainActivity.this);
+		MDatabase.insertIssue(MainActivity.this, cv);
+		
+		cv = new ContentValues();
+		cv.put("content", "Android Learning!");
+		MDatabase.Instance(MainActivity.this);
+		MDatabase.insertIssue(MainActivity.this, cv);
+		
+		
+//		//打开或创建ToDoList.db数据库  
+//        m_db = openOrCreateDatabase("ToDoList.db", Context.MODE_PRIVATE, null);  
+//        m_db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME); 
+//        
+//        //创建issue表  
+//        m_db.execSQL("CREATE TABLE " + TABLE_NAME + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, content VARCHAR(1000), date DATETIME DEFAULT CURRENT_TIMESTAMP)");  
+//        
+//        // 人工初始化一些数据
+//        ContentValues cv = new ContentValues();
+//        cv.put("content", "This is a joke!");
+//        m_db.insert(TABLE_NAME, null, cv);
+//        
+//        cv = new ContentValues();
+//        cv.put("content", "Happy new year!");
+//        m_db.insert(TABLE_NAME, null, cv);
+//        
+//        cv = new ContentValues();
+//        cv.put("content", "Android Learning!");
+//        m_db.insert(TABLE_NAME, null, cv);
 	}
 	
 	private List<String> getData(){       

@@ -28,6 +28,10 @@
             android:name="com.rayhuo.todolist.AddIssue"
             android:label="@string/title_activity_add_issue" >
         </activity>
+        <activity
+            android:name="com.rayhuo.todolist.MDatabase"
+            android:label="@string/title_activity_mdatabase" >
+        </activity>
     </application>
 
 </manifest>
