@@ -2,6 +2,8 @@ package com.rayhuo.todolist;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,8 +27,16 @@ public class AddIssue extends Activity {
 		save_button.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View view) {
 				// TODO Auto-generated method stub
+				String new_content = m_editText.getText().toString();
+				Intent intent = new Intent(AddIssue.this, MainActivity.class);
+				intent.setAction(Intent.ACTION_SEND);
+				intent.putExtra(Intent.EXTRA_TEXT, new_content);        // 参数是键值对，name value
+				intent.setType("text/plain");
+			    startActivity(intent);                                        // 把intent发送给SecondActivity
+
+				
 				
 			}
 			
