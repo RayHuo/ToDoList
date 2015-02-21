@@ -32,10 +32,10 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
-	private ListView m_ListView;
-	private SQLiteDatabase m_db;
+	private MDatabase m_Database = null;
+	private ListView m_ListView = null;
 	private final String TABLE_NAME = "issue";
-	private Button add_button;
+	private Button add_button = null;
 	private Boolean flag = false;
 	
 	@SuppressWarnings("deprecation")
@@ -44,19 +44,10 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);  // 这句必须写在这个位置，否则会出错
 		
-		ContentValues cv = null;
-		//获取由上一个Activity传递过来的Intent对象
-        Intent get_intent = getIntent();
-        //获取这个Intent对象的Extra中对应键的值
-        String info = get_intent.getStringExtra(Intent.EXTRA_TEXT);
-        if(info != null) {
-        	cv = new ContentValues();
-        	cv.put("content", info);
-        }
-		
         // 初始化数据库
-     	initDatabase(cv);
-		
+//     	initDatabase(cv);
+        m_Database = new MDatabase(MainActivity.this);
+        SQLiteDatabase m_db = m_Database.getReadableDatabase();
 		
 		// 直接在AddIssue中把数据放进intent里返回来，然后调用这里的insert函数插入到数据库即可
 		
@@ -80,44 +71,48 @@ public class MainActivity extends Activity {
 			public void onClick(View view) {
 				// TODO Auto-generated method stub
 				Intent add_intent = new Intent(MainActivity.this, AddIssue.class);
+				add_intent.setAction(Intent.ACTION_SEND);
+				add_intent.putExtra(Intent.EXTRA_TEXT, TABLE_NAME);        // 参数是键值对，name value
+				add_intent.setType("text/plain");
 				startActivity(add_intent);
 			}
 			
 		});
 		
+		m_db.close();
 	}
 
-	private void initDatabase(ContentValues c) {		
-		//打开或创建ToDoList.db数据库  
-        m_db = openOrCreateDatabase("ToDoList.db", Context.MODE_PRIVATE, null);  
-        m_db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME); 
-        
-        //创建issue表  
-        m_db.execSQL("CREATE TABLE " + TABLE_NAME + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, content VARCHAR(1000), date DATETIME DEFAULT CURRENT_TIMESTAMP)");  
-        
-        if(c != null)
-        	m_db.insert(TABLE_NAME, null, c);
-        
-        // 人工初始化一些数据
-        if(!flag) {
-	        ContentValues cv = new ContentValues();
-	        cv.put("content", "This is a joke!");
-	        m_db.insert(TABLE_NAME, null, cv);
-	        
-	        cv = new ContentValues();
-	        cv.put("content", "Happy new year!");
-	        m_db.insert(TABLE_NAME, null, cv);
-	        
-	        cv = new ContentValues();
-	        cv.put("content", "Android Learning!");
-	        m_db.insert(TABLE_NAME, null, cv);
-	        
-	        flag = true;
-        }
-	}
+//	private void initDatabase(ContentValues c) {		
+//		//打开或创建ToDoList.db数据库  
+//        m_db = openOrCreateDatabase("ToDoList.db", Context.MODE_PRIVATE, null);  
+//        m_db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME); 
+//        
+//        //创建issue表  
+//        m_db.execSQL("CREATE TABLE " + TABLE_NAME + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, content VARCHAR(1000), date DATETIME DEFAULT CURRENT_TIMESTAMP)");  
+//        
+//        if(c != null)
+//        	m_db.insert(TABLE_NAME, null, c);
+//        m_db.close();
+//        // 人工初始化一些数据
+////        if(!flag) {
+////	        ContentValues cv = new ContentValues();
+////	        cv.put("content", "This is a joke!");
+////	        m_db.insert(TABLE_NAME, null, cv);
+////	        
+////	        cv = new ContentValues();
+////	        cv.put("content", "Happy new year!");
+////	        m_db.insert(TABLE_NAME, null, cv);
+////	        
+////	        cv = new ContentValues();
+////	        cv.put("content", "Android Learning!");
+////	        m_db.insert(TABLE_NAME, null, cv);
+////	        
+////	        flag = true;
+////        }
+//	}
 
 	@Override
 	protected void onDestroy ()  {
-		m_db.close();
+//		m_db.close();
 	}
 }

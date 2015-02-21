@@ -2,7 +2,9 @@ package com.rayhuo.todolist;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.text.Editable;
 import android.view.Menu;
 import android.view.View;
@@ -11,8 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class AddIssue extends Activity {
+	
 	private Button save_button;
 	private EditText m_editText;
+	private MDatabase m_Database = null;
+	private String TABLE_NAME = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +27,9 @@ public class AddIssue extends Activity {
 		m_editText = (EditText)findViewById(R.id.editText1);
 		
 		// 需要把SQLiteDatabase封装成一个单例来使用。
+		Intent g_intent = getIntent();
+		TABLE_NAME = g_intent.getStringExtra(Intent.EXTRA_TEXT);
+		
 		
 		save_button = (Button)findViewById(R.id.save_button);
 		save_button.setOnClickListener(new OnClickListener() {
@@ -29,15 +37,22 @@ public class AddIssue extends Activity {
 			@Override
 			public void onClick(View view) {
 				// TODO Auto-generated method stub
-				String new_content = m_editText.getText().toString();
-				Intent intent = new Intent(AddIssue.this, MainActivity.class);
-				intent.setAction(Intent.ACTION_SEND);
-				intent.putExtra(Intent.EXTRA_TEXT, new_content);        // 参数是键值对，name value
-				intent.setType("text/plain");
-			    startActivity(intent);                                        // 把intent发送给SecondActivity
+//				String new_content = m_editText.getText().toString();
+//				Intent intent = new Intent(AddIssue.this, MainActivity.class);
+//				intent.setAction(Intent.ACTION_SEND);
+//				intent.putExtra(Intent.EXTRA_TEXT, new_content);        // 参数是键值对，name value
+//				intent.setType("text/plain");
+//			    startActivity(intent);                                        // 把intent发送给SecondActivity
 
+				m_Database = new MDatabase(AddIssue.this);
+		        SQLiteDatabase m_db = m_Database.getWritableDatabase();    
+		        ContentValues cv = new ContentValues();
+		        cv.put("content", m_editText.getText().toString());
+		        m_db.insert(TABLE_NAME, null, cv);
+				m_db.close();
 				
-				
+				Intent back_intent = new Intent(AddIssue.this, MainActivity.class);
+				startActivity(back_intent); 
 			}
 			
 		});

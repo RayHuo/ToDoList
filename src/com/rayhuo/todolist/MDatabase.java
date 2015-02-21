@@ -8,12 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MDatabase extends SQLiteOpenHelper {
 
-	private static MDatabase theMDatabase;
 	private static final String DATABASE_NAME = "ToDoList.db";  
     private static final int DATABASE_VERSION = 1;  
     private static final String TABLE_NAME ="issue";  
 	
-	private MDatabase(Context context) {
+	public MDatabase(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		// TODO Auto-generated constructor stub
 	}
@@ -33,19 +32,5 @@ public class MDatabase extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	public static SQLiteDatabase Instance(Context context) {
-        if (theMDatabase == null) {  
-        	theMDatabase = new MDatabase(context);  
-        }  
-        return theMDatabase.getReadableDatabase();  
-	}
-	
-	// ≤Â»Î ˝æ›
-	public static void insertIssue(Context context, ContentValues cv) {
-		SQLiteDatabase db = MDatabase.Instance(context);
-		db.insert(TABLE_NAME, null, cv);
-        db.close();
 	}
 }
