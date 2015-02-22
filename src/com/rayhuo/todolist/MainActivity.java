@@ -2,12 +2,11 @@ package com.rayhuo.todolist;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.os.Bundle;
-import android.provider.Contacts.People;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.PhoneLookup;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,6 +18,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -36,7 +36,6 @@ public class MainActivity extends Activity {
 	private ListView m_ListView = null;
 	private final String TABLE_NAME = "issue";
 	private Button add_button = null;
-	private Boolean flag = false;
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -45,11 +44,8 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);  // 这句必须写在这个位置，否则会出错
 		
         // 初始化数据库
-//     	initDatabase(cv);
         m_Database = new MDatabase(MainActivity.this);
-        SQLiteDatabase m_db = m_Database.getReadableDatabase();
-		
-		// 直接在AddIssue中把数据放进intent里返回来，然后调用这里的insert函数插入到数据库即可
+        final SQLiteDatabase m_db = m_Database.getReadableDatabase();
 		
 		// 创建显示用的ListView		
 		m_ListView = (ListView)findViewById(R.id.listView1);
@@ -64,6 +60,34 @@ public class MainActivity extends Activity {
                 new int[] { android.R.id.text1, android.R.id.text2 });
 		m_ListView.setAdapter(listAdapter);
 		
+		// listView点击事件
+		m_ListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				// TODO Auto-generated method stub
+
+				// 获取点击到的issue的信息
+				Cursor content_cur= (Cursor)parent.getItemAtPosition(position);
+				String content = content_cur.getString(content_cur.getColumnIndex("content"));
+//				Toast.makeText(MainActivity.this, "Here : " + content, Toast.LENGTH_SHORT).show();
+				
+				Bundle edit_bundle = new Bundle();
+				edit_bundle.putString("content", content);
+				edit_bundle.putString("table_name", TABLE_NAME);
+				edit_bundle.putString("id", String.valueOf(id));	// 这个id就是该item在sqlite数据库中表里的id
+				// 然后通过intent传给EditIssue这个Activity
+				Intent edit_intent = new Intent(MainActivity.this, ItemIssue.class);
+				edit_intent.putExtras(edit_bundle);
+				startActivity(edit_intent);	
+			}
+			
+			
+		});
+		
+		
+		// 添加按钮
 		add_button = (Button)findViewById(R.id.add_button);
 		add_button.setOnClickListener(new OnClickListener() {
 
@@ -82,37 +106,8 @@ public class MainActivity extends Activity {
 		m_db.close();
 	}
 
-//	private void initDatabase(ContentValues c) {		
-//		//打开或创建ToDoList.db数据库  
-//        m_db = openOrCreateDatabase("ToDoList.db", Context.MODE_PRIVATE, null);  
-//        m_db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME); 
-//        
-//        //创建issue表  
-//        m_db.execSQL("CREATE TABLE " + TABLE_NAME + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, content VARCHAR(1000), date DATETIME DEFAULT CURRENT_TIMESTAMP)");  
-//        
-//        if(c != null)
-//        	m_db.insert(TABLE_NAME, null, c);
-//        m_db.close();
-//        // 人工初始化一些数据
-////        if(!flag) {
-////	        ContentValues cv = new ContentValues();
-////	        cv.put("content", "This is a joke!");
-////	        m_db.insert(TABLE_NAME, null, cv);
-////	        
-////	        cv = new ContentValues();
-////	        cv.put("content", "Happy new year!");
-////	        m_db.insert(TABLE_NAME, null, cv);
-////	        
-////	        cv = new ContentValues();
-////	        cv.put("content", "Android Learning!");
-////	        m_db.insert(TABLE_NAME, null, cv);
-////	        
-////	        flag = true;
-////        }
-//	}
-
 	@Override
 	protected void onDestroy ()  {
-//		m_db.close();
+		
 	}
 }

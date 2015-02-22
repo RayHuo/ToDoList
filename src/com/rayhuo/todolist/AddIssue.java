@@ -37,13 +37,6 @@ public class AddIssue extends Activity {
 			@Override
 			public void onClick(View view) {
 				// TODO Auto-generated method stub
-//				String new_content = m_editText.getText().toString();
-//				Intent intent = new Intent(AddIssue.this, MainActivity.class);
-//				intent.setAction(Intent.ACTION_SEND);
-//				intent.putExtra(Intent.EXTRA_TEXT, new_content);        // 参数是键值对，name value
-//				intent.setType("text/plain");
-//			    startActivity(intent);                                        // 把intent发送给SecondActivity
-
 				m_Database = new MDatabase(AddIssue.this);
 		        SQLiteDatabase m_db = m_Database.getWritableDatabase();    
 		        ContentValues cv = new ContentValues();

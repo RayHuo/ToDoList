@@ -6,5 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_add_issue">AddIssue</string>
     <string name="title_activity_mdatabase">MDatabase</string>
+    <string name="title_activity_item_issue">ItemIssue</string>
+    <string name="title_activity_edit_issue">EditIssue</string>
 
 </resources>
