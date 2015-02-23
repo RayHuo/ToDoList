@@ -18,16 +18,24 @@
         android:ems="10"
         android:inputType="textMultiLine" />
 
-    <Button
-        android:id="@+id/save_button"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="保存" />
+        android:layout_height="wrap_content" >
 
-    <Button
-        android:id="@+id/delete_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="删除" />
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="147dp"
+            android:layout_height="wrap_content"
+            android:text="保存" />
+
+        <Button
+            android:id="@+id/delete_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="删除" />   
+            
+    </LinearLayout>
+    
+    
 
 </LinearLayout>
