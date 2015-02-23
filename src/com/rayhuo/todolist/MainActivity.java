@@ -31,6 +31,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+/**
+ * 目前剩下的问题：
+ * 1. EditText和Button的布局问题，都不是最佳的自适应
+ * 2. 返回键还是有一些问题，可能需要完全屏蔽掉返回键自身的返回功能，纯粹执行自定义的跳转
+ */
 public class MainActivity extends Activity {
 	
 	private MDatabase m_Database = null;
