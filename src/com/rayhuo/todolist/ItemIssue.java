@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,13 +20,14 @@ public class ItemIssue extends Activity {
 	private MDatabase m_Database = null;
 	private String TABLE_NAME = null;
 	private String ID = null;
+	private Bundle get_bundle = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_item_issue);
 		
-		final Bundle get_bundle = getIntent().getExtras();
+		get_bundle = getIntent().getExtras();
 		TABLE_NAME = get_bundle.getString("table_name");
 		ID = get_bundle.getString("id");
 		
@@ -69,6 +71,21 @@ public class ItemIssue extends Activity {
 		});
 	}
 
+	
+	@Override
+	// 捕捉返回键动作，然后返回上一级activity
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// 在主页按返回键，直接退出程序。
+		if(keyCode == KeyEvent.KEYCODE_BACK) {
+			Intent back_intent = new Intent(ItemIssue.this, MainActivity.class);
+			startActivity(back_intent);	// 记住哪些Activity是需要获取bundle，而哪些是不需要的，来决定如何写
+			this.finish();
+		}
+		
+		return super.onKeyDown(keyCode, event);
+	}
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

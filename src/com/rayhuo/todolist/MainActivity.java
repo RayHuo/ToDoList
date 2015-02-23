@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -95,9 +96,9 @@ public class MainActivity extends Activity {
 			public void onClick(View view) {
 				// TODO Auto-generated method stub
 				Intent add_intent = new Intent(MainActivity.this, AddIssue.class);
-				add_intent.setAction(Intent.ACTION_SEND);
-				add_intent.putExtra(Intent.EXTRA_TEXT, TABLE_NAME);        // 参数是键值对，name value
-				add_intent.setType("text/plain");
+				Bundle add_bundle = new Bundle();
+				add_bundle.putString("table_name", TABLE_NAME);	// 键值对
+				add_intent.putExtras(add_bundle);
 				startActivity(add_intent);
 			}
 			
@@ -106,6 +107,21 @@ public class MainActivity extends Activity {
 		m_db.close();
 	}
 
+	
+	@Override
+	// 捕捉返回键动作，然后结束程序
+	// 在这一步还是有问题，会跳转到主页面两次
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// 在主页按返回键，直接退出程序。
+		if(keyCode == KeyEvent.KEYCODE_BACK) {
+//			this.finish();
+			System.exit(0);
+            return true;
+		}
+
+		return super.onKeyDown(keyCode, event);
+	}
+	
 	@Override
 	protected void onDestroy ()  {
 		

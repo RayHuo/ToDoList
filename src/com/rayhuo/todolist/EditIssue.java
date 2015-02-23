@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,13 +20,14 @@ public class EditIssue extends Activity {
 	private EditText m_editText = null;
 	private String TABLE_NAME = null;
 	private String ID = null;
+	private Bundle get_bundle = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_issue);
 		
-		final Bundle get_bundle = getIntent().getExtras();
+		get_bundle = getIntent().getExtras();
 		TABLE_NAME = get_bundle.getString("table_name");
 		ID = get_bundle.getString("id");
 		String content = get_bundle.getString("content");
@@ -72,6 +74,22 @@ public class EditIssue extends Activity {
 		});
 		
 	}
+	
+	
+	@Override
+	// 捕捉返回键动作，然后返回上一级activity
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// 在主页按返回键，直接退出程序。
+		if(keyCode == KeyEvent.KEYCODE_BACK) {
+			Intent back_intent = new Intent(EditIssue.this, ItemIssue.class);
+			back_intent.putExtras(get_bundle);	// 记住哪些Activity是需要获取bundle，而哪些是不需要的，来决定如何写
+			startActivity(back_intent);
+			this.finish();
+		}
+		
+		return super.onKeyDown(keyCode, event);
+	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
